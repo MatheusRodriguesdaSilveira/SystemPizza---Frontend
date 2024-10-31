@@ -1,12 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SignupPage from "@/app/cadastro/page";
 import LoginForm from "@/app/login/LoginForm";
 
 export default function TabsDemo() {
-  const [activeTab, setActiveTab] = useState("login"); // Estado da aba ativa
+  const [activeTab, setActiveTab] = useState("login");
+
+  useEffect(() => {
+    // Ouve o evento customizado `signupSuccess`
+    function handleSignupSuccess() {
+      setActiveTab("login");
+    }
+
+    window.addEventListener("signupSuccess", handleSignupSuccess);
+
+    // Limpeza ao desmontar o componente
+    return () => {
+      window.removeEventListener("signupSuccess", handleSignupSuccess);
+    };
+  }, []);
 
   return (
     <div className="justify-center items-center flex flex-col">
@@ -27,8 +41,7 @@ export default function TabsDemo() {
         </TabsList>
 
         <TabsContent value="signup">
-          <SignupPage onSignupSuccess={() => setActiveTab("login")} />{" "}
-          {/* Passa a função para alternar a aba */}
+          <SignupPage /> {/* Sem `onSignupSuccess` */}
         </TabsContent>
 
         <TabsContent value="login">

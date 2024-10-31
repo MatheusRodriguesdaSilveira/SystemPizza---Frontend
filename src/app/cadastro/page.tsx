@@ -7,11 +7,9 @@ import { Input } from "@/components/ui/input";
 import { User, Mail, Lock, UserPlus } from "lucide-react";
 import { CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 
-interface SignupPageProps {
-  onSignupSuccess: () => void;
-}
+interface SignupPageProps {}
 
-export default function SignupPage({ onSignupSuccess }: SignupPageProps) {
+export default function SignupPage() {
   const [error, setError] = useState<string | null>(null);
 
   async function handleRegister(formData: FormData) {
@@ -27,8 +25,9 @@ export default function SignupPage({ onSignupSuccess }: SignupPageProps) {
     try {
       await api.post("/users", { name, email, password });
 
-      // Ao invés de redirecionar, chama a função que alterna para a aba de login
-      onSignupSuccess();
+      // Após o sucesso, adicione um evento personalizado para mudar a aba
+      const signupEvent = new CustomEvent("signupSuccess");
+      window.dispatchEvent(signupEvent);
     } catch (err: any) {
       if (err.response && err.response.data.error === "Email já existente") {
         setError("Email já está cadastrado.");
@@ -37,7 +36,6 @@ export default function SignupPage({ onSignupSuccess }: SignupPageProps) {
       }
     }
   }
-
   return (
     <form
       onSubmit={(e) => {
