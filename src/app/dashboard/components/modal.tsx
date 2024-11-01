@@ -160,7 +160,7 @@ export function Modal() {
           <div className="flex flex-col gap-2 m-3">
             {orderDetails.items.map((item: any, index: number) => (
               <div key={item.id} className="flex flex-col ">
-                <Image
+                <img
                   src={item.product.banner}
                   width={120}
                   height={120}
