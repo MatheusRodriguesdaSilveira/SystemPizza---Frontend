@@ -29,8 +29,9 @@ export default function SignupPage() {
       const signupEvent = new CustomEvent("signupSuccess");
       window.dispatchEvent(signupEvent);
     } catch (err: any) {
-      if (err.response && err.response.data.error === "Email já existente") {
-        setError("Email já está cadastrado.");
+      console.error(err);
+      if (err.response && err.response.data.error) {
+        setError(err.response.data.error);
       } else {
         setError("Erro ao cadastrar. Tente novamente.");
       }
